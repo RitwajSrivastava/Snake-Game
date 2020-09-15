@@ -8,6 +8,8 @@ $(document).ready(function(){
     var foodStroke = "black";
     var dx = 10;
     var dy = 0;
+    var eatingSound = new Audio("eatingSound.mp3");
+    var gameLost = new Audio("gameLost.mp3");
     var speedLengthComparator = 0;
     var speed = 100;
     var score = 0;
@@ -15,7 +17,7 @@ $(document).ready(function(){
     var foodx,foody;
     var snake_fill = "rgb(49, 130, 197)";
     var snake_stroke = "white";
-    board_background = "rgb(235, 1443, 143)";
+    board_background = "black";
     board_border = "white";
     var board = $("#board")[0];
     var ctx = board.getContext("2d");
@@ -23,7 +25,6 @@ $(document).ready(function(){
     ctx.strokestyle = board_border;
     ctx.fillRect(0, 0, board.width, board.height);
     ctx.strokeRect(0, 0, board.width, board.height);
-    var last = snake.length-1;
     var first = 0;
     printSnake();
     createFood();
@@ -79,6 +80,7 @@ $(document).ready(function(){
     {
         if(snake[first].x >= board.width || snake[first].x < 0 || snake[first].y >= board.height || snake[first].y < 0)
             {
+                gameLost.play();
                 $("#over").fadeIn(400);
                 return true;
             }
@@ -86,6 +88,7 @@ $(document).ready(function(){
         {
             if(snake[i].x == snake[first].x && snake[i].y == snake[first].y)
             {
+                gameLost.play();
                 $("#over").fadeIn(400);
                 return true;
             }
@@ -94,6 +97,7 @@ $(document).ready(function(){
     }
     function createFood()
     {
+        eatingSound.play();
         foodx = randpos();
         foody = randpos();
         if(foodx == snake[first].x && foody == snake[first].y)
